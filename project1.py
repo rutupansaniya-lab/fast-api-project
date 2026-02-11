@@ -16,7 +16,7 @@ async def firstFunction():
     return {"message": "Hello World"}
 
 @app.get("/books")
-async def get_books():
+async def getBooks():
     return BOOKS
 
 @app.get("/books/{category}")
