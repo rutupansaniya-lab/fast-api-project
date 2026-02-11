@@ -12,7 +12,7 @@ BOOKS = [
 ]
 
 @app.get("/")
-async def first_function():
+async def firstFunction():
     return {"message": "Hello World"}
 
 @app.get("/books")
@@ -20,24 +20,24 @@ async def get_books():
     return BOOKS
 
 @app.get("/books/{category}")
-async def get_books_by_category(category: str):
+async def getBooksByCategory(category: str):
     return [book for book in BOOKS if book['category'] == category]
 
 @app.get("/books/author/{author}")
-async def get_books_by_author(author: str):
+async def getBooksByAuthor(author: str):
     return [book for book in BOOKS if book['author'] == author] 
 
 @app.get("/books/find/")
-async def get_books_by_category_and_author(category: str, author: str):
+async def getBooksByCategoryAndAuthor(category: str, author: str):
     return [book for book in BOOKS if book['category'].casefold() == category.casefold() and book['author'].casefold() == author.casefold()]    
 
 @app.post("/books")
-async def add_book(new_book=Body()):
+async def addBook(new_book=Body()):
     BOOKS.append(new_book)
     return {"message": "Book added successfully", "book": new_book}
 
 @app.put("/books/update_book")
-async def update_book(book_to_update=Body()):
+async def updateBook(book_to_update=Body()):
     for book in BOOKS:
         for i in range (len(BOOKS)):
             if BOOKS[i]['title'].casefold() == book_to_update['title'].casefold():
@@ -45,7 +45,7 @@ async def update_book(book_to_update=Body()):
                 return {"message": "Book updated successfully", "book": book_to_update}
             
 @app.delete("/books/delete_book")
-async def delete_book(book_title: str):
+async def deleteBook(book_title: str):
     for i in range (len(BOOKS)):
         if BOOKS[i]['title'].casefold() == book_title.casefold():
             deleted_book = BOOKS.pop(i)
