@@ -12,26 +12,31 @@ BOOKS = [
 ]
 
 @app.get("/")
-async def first_function():
+async def firstfunction():
     return {"message": "Hello World"}
 
 @app.get("/books")
-async def get_books():
-    return BOOKS
+async def get_books(category: str = None, author: str = None):
+    filtered_books = BOOKS
+    if category:
+        filtered_books = [book for book in filtered_books if book['category'].casefold() == category.casefold()]
+    if author:
+        filtered_books = [book for book in filtered_books if book['author'].casefold() == author.casefold()]
+    return filtered_books
 
-@app.get("/books/{category}")
+@app.get("/books/category/{category}")
 async def get_books_by_category(category: str):
-    return [book for book in BOOKS if book['category'] == category]
+    return [book for book in BOOKS if book['category'].casefold() == category.casefold()]
 
 @app.get("/books/author/{author}")
 async def get_books_by_author(author: str):
-    return [book for book in BOOKS if book['author'] == author] 
+    return [book for book in BOOKS if book['author'].casefold() == author.casefold()] 
 
 @app.get("/books/find/")
 async def get_books_by_category_and_author(category: str, author: str):
     return [book for book in BOOKS if book['category'].casefold() == category.casefold() and book['author'].casefold() == author.casefold()]    
 
-@app.post("/books")
+@app.post("/books/add_book")
 async def add_book(new_book=Body()):
     BOOKS.append(new_book)
     return {"message": "Book added successfully", "book": new_book}
@@ -43,6 +48,7 @@ async def update_book(book_to_update=Body()):
             if BOOKS[i]['title'].casefold() == book_to_update['title'].casefold():
                 BOOKS[i] = book_to_update
                 return {"message": "Book updated successfully", "book": book_to_update}
+        return {"message": "Book not found"}
             
 @app.delete("/books/delete_book")
 async def delete_book(book_title: str):
