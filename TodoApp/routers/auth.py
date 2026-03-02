@@ -3,12 +3,13 @@ from pydantic import BaseModel
 from typing import Annotated, Literal
 from sqlalchemy.orm import Session
 from starlette import status
-from database import SessionLocal
-from models import User
+from ..database import SessionLocal
+from ..models import User
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import timedelta, datetime, timezone
+
 
 router=APIRouter(
     prefix='/auth',
@@ -32,7 +33,7 @@ class CreateUserRequest(BaseModel):
     last_name: str
     password: str
     role: Literal["user", "admin"]
-    phone_number: str | None = None
+    phone_number: str
 
 def get_db():
     db = SessionLocal()
@@ -105,4 +106,3 @@ async def login_for_access_token(form_data : Annotated[OAuth2PasswordRequestForm
     
     token=create_access_token(user.username,user.id,user.role,timedelta(minutes=20))
     return {'access_token': token, 'token_type': 'bearer'}
-

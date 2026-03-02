@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, Path, APIRouter
-from models import Todos, User
-from database import SessionLocal
+from ..models import Todos, User
+from ..database import SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session 
 from starlette import status
@@ -36,7 +36,7 @@ async def read_todo(user: user_dependency, db: db_dependency, todo_id: int=Path(
     todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).first()
     if todo_model is not None:
         return todo_model
-    raise HTTPException(status_code=404,detail='Todo not found' )
+    raise HTTPException(status_code=404,detail='Todo not found.' )
 
 @router.post("/todo/add_data",status_code=status.HTTP_201_CREATED)
 async def create_todo(user:user_dependency, db: db_dependency, todo_request: TodoRequest):
@@ -54,7 +54,7 @@ async def update_todo(user: user_dependency, db: db_dependency, todo_id: int, to
     todo_model= db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id == user.get('id')).first()
 
     if todo_model is None: 
-        raise HTTPException(status_code=404, detail="Todo not found")
+        raise HTTPException(status_code=404, detail="Todo not found.")
     
     todo_model.title=todo_request.title
     todo_model.description=todo_request.description
@@ -70,7 +70,7 @@ async def delete_todo(user: user_dependency, db: db_dependency,todo_id :int = Pa
         raise HTTPException(status_code=404, detail='Authentication Failed')
     todo_model =db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id == user.get('id')).first()
     if todo_model is None:
-        raise HTTPException(status_code=404, detail="Todo not found")
+        raise HTTPException(status_code=404, detail="Todo not found.")
     db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).delete()
     db.commit()
 
