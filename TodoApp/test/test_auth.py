@@ -5,6 +5,7 @@ from datetime import timedelta
 import pytest
 from fastapi import HTTPException
 
+
 app.dependency_overrides[get_db] = override_get_db
 
 def test_authenticate_user(test_user):

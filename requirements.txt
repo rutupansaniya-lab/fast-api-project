@@ -9,3 +9,6 @@ psycopg2-binary
 pymysql
 alembic
 pytest
+pytest-asyncio
+aiofiles
+jinja2
