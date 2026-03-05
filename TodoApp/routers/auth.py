@@ -32,6 +32,7 @@ class CreateUserRequest(BaseModel):
     last_name: str
     password: str
     role: Literal["user", "admin"]
+    phone_number: str | None = None
 
 def get_db():
     db = SessionLocal()
@@ -53,6 +54,8 @@ async def create_user(db: db_dependency,create_user_request: CreateUserRequest):
         hashed_password=bcrypt_context.hash(create_user_request.password),
         is_active=True,
         role=create_user_request.role,
+        phone_number=create_user_request.phone_number
+        
     )
 
     db.add(create_user_model)
@@ -102,3 +105,4 @@ async def login_for_access_token(form_data : Annotated[OAuth2PasswordRequestForm
     
     token=create_access_token(user.username,user.id,user.role,timedelta(minutes=20))
     return {'access_token': token, 'token_type': 'bearer'}
+
