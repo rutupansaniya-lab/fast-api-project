@@ -59,7 +59,7 @@ def test_update_todo(test_todo):
         'priority': 3,
         'complete': True
     }
-    response = client.put("/todos/todo/update?todo_id=1", json=request_data)
+    response = client.put("/todos/todo/1", json=request_data)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     db=TestingSessionLocal()
     todo_in_db = db.query(Todos).filter(Todos.id == 1).first()
@@ -75,7 +75,7 @@ def test_update_todo_not_found(test_todo):
         'priority': 3,
         'complete': True
     }
-    response = client.put("/todos/todo/update?todo_id=999", json=request_data)
+    response = client.put("/todos/todo/999", json=request_data)
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert response.json() == {'detail': 'Todo not found.'}
    

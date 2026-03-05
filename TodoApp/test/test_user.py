@@ -1,5 +1,5 @@
 from .utils import *
-from ..routers.admin import get_db 
+from ..routers.users import get_db 
 from ..routers.auth import get_current_user
 from starlette import status
 from ..main import app
@@ -13,7 +13,7 @@ def test_return_user(test_user):
     response = client.get("/user/")
     assert response.status_code == status.HTTP_200_OK
     assert response.json()['username'] == 'Rutu'
-    assert response.json()['email'] == 'rutu.pansaniya@seaflux.tech'
+    assert response.json()['email'] == 'rutu@seaflux.tech'
     assert response.json()['first_name'] == 'rutu'
     assert response.json()['last_name'] == 'pansaniya'
     assert response.json()['role'] == 'admin'
